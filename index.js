@@ -1,156 +1,28 @@
-var express = require('express')
-var cors = require('cors')
-var app = express()
-const mysql = require('mysql2');
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'robinhood',
-    port:3307
-  });
+const bodyParser = require('body-parser');
+const jobsRouter = require('./gateway/jobs');
 
-app.use(cors())
+const app = express();
+dotenv.config();
+
+app.use(bodyParser.json()); 
+app.use(cors());
+
+const port = Number(process.env.PORT || 5002);
 
 app.get('/', (req, res) => {
-    res.json({ message: 'API is running' })
-  })
+  res.json({ message: 'API is running' });
+});
 
-app.get('/jobs', function (req, res, next) {
+app.get('/test', (req, res) => {
+  res.json({ message: 'API is test' });
+});
 
-    try {
+app.use('/jobs', jobsRouter);
 
-        connection.query(
-            `SELECT 
-                jobs.id, jobs.title, jobs.status, 
-                jobs.created_at, jobs.detail,
-                Users.name, Users.email, Users.image
-            FROM jobs 
-                INNER JOIN Users 
-            ON 
-                jobs.created_by = Users.id      
-            
-            `,
-            function(err, results, fields) {
-                if(err){
-                    console.log(err);
-                }
-                res.json(results);
-
-            }
-
-        );
-        
-    } catch (error) {
-        console.log(" Error : " , error );
-    }
-
-      
-
-})
-
-app.get('/jobs/:id', function (req, res, next) {
-
-    try {
-
-        connection.query(
-            `SELECT 
-                jobs.id, jobs.title, jobs.status, 
-                jobs.created_at, jobs.detail,
-                Users.name, Users.email, Users.image
-            FROM jobs 
-                INNER JOIN Users 
-            ON 
-                jobs.created_by = Users.id      
-            
-            `,
-            function(err, results, fields) {
-                if(err){
-                    console.log(err);
-                }
-                res.json(results);
-
-            }
-
-        );
-        
-    } catch (error) {
-        console.log(" Error : " , error );
-    }
-
-      
-
-})
-
-app.get('/jobs/page/:page', function (req, res, next) {
-
-    try {
-
-        connection.query(
-            `SELECT 
-                jobs.id, jobs.title, jobs.status, 
-                jobs.created_at, jobs.detail,
-                Users.name, Users.email, Users.image
-            FROM jobs 
-                INNER JOIN Users 
-            ON 
-                jobs.created_by = Users.id      
-            
-            `,
-            function(err, results, fields) {
-                if(err){
-                    console.log(err);
-                }
-                res.json(results);
-
-            }
-
-        );
-        
-    } catch (error) {
-        console.log(" Error : " , error );
-    }
-
-      
-
-})
-
-
-app.post('/jobs/', function (req, res, next) {
-
-    try {
-
-        connection.query(
-            `SELECT 
-                jobs.id, jobs.title, jobs.status, 
-                jobs.created_at, jobs.detail,
-                Users.name, Users.email, Users.image
-            FROM jobs 
-                INNER JOIN Users 
-            ON 
-                jobs.created_by = Users.id      
-            
-            `,
-            function(err, results, fields) {
-                if(err){
-                    console.log(err);
-                }
-                res.json(results);
-
-            }
-
-        );
-        
-    } catch (error) {
-        console.log(" Error : " , error );
-    }
-
-      
-
-})
-
-
-app.listen(5000, function () {
-   console.log('listening on port 5000')
-})
+app.listen(5000, () => {
+    console.log(`🚀 Server running on port ${port}!`);
+});

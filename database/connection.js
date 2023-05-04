@@ -1,27 +1,22 @@
 // get the client
-const mysql = require('mysql2');
+const dotenv = require("dotenv");
+const mysql = require("mysql2/promise");
+dotenv.config();
 
-// create the connection to database
-export const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  database: 'test'
+const connection = mysql.createPool({
+  host: process.env.HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-// simple query
-// connection.query(
-//   'SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45',
-//   function(err, results, fields) {
-//     console.log(results); // results contains rows returned by server
-//     console.log(fields); // fields contains extra meta data about results, if available
-//   }
-// );
+// connection.connect(function(err) {
+//   if (err) throw err;
+//   console.log('database connected!');
+// });
 
-// // with placeholder
-// connection.query(
-//   'SELECT * FROM `table` WHERE `name` = ? AND `age` > ?',
-//   ['Page', 45],
-//   function(err, results) {
-//     console.log(results);
-//   }
-// );
+module.exports = connection;
