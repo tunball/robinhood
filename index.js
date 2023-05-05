@@ -17,10 +17,6 @@ app.get('/', (req, res) => {
   res.json({ message: 'API is running' });
 });
 
-app.get('/test', (req, res) => {
-  res.json({ message: 'API is test' });
-});
-
 app.use('/jobs', jobsRouter);
 
 app.listen(5000, () => {
