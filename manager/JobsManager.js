@@ -2,7 +2,10 @@ const conn = require("../database/connection");
 
 class JobsManager {
 
-  constructor() {}
+  constructor() {
+
+
+  }
 
   async getJobs(p = 1) {
 

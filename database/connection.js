@@ -14,9 +14,24 @@ const connection = mysql.createPool({
   queueLimit: 0,
 });
 
-// connection.connect(function(err) {
-//   if (err) throw err;
-//   console.log('database connected!');
-// });
+// connection.getConnection((err, connection2) => {
+//   if (err) {
+//     console.error("Error connecting to MySQL: ", err);
+//     return;
+//   }
+
+//   console.log("MySQL connection successful!");
+// })
+
+
+  // connection.getConnection((err, connection) => {
+  //   if (err) {
+  //     console.error("Error connecting to MySQL: ", err);
+  //     return;
+  //   }
+  //   console.error(" connecting to MySQL success ", err);
+  // });
+
+
 
 module.exports = connection;
